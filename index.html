@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+        <div class="box" id="box">
+			
+		</div>
+	</body>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+		var Swiper = function(config) {
+			var $div = $('<div class="slider" id="slider"></div>');
+			var $div1 = $('<div class="slide"><img src="img/b5.png" alt=""></div>');
+			var $div2 = $('<div class="slide"><img src="img/b1.png" alt=""></div>');
+			var $div3 = $('<div class="slide"><img src="img/b2.png" alt=""></div>');
+			var $div4 = $('<div class="slide"><img src="img/b3.png" alt=""></div>');
+			var $div5 = $('<div class="slide"><img src="img/b4.png" alt=""></div>');
+			var $div6 = $('<div class="slide"><img src="img/b5.png" alt=""></div>');
+			var $div7 = $('<div class="slide"><img src="img/b1.png" alt=""></div>');
+			var $span1 = $('<span id="left"><</span>');
+			var $span2 = $('<span id="right">></span>');
+			var $ul = $('<ul class="nav" id="navs"></ul>');
+			var $li = $('<li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>');
+			$div.append($div1);
+			$div.append($div2);
+			$div.append($div3);
+			$div.append($div4);
+			$div.append($div5);
+			$div.append($div6);
+			$div.append($div7);
+			$(config.container).append($div);
+			$(config.container).append($span1);
+			$(config.container).append($span2);
+			$ul.append($li);
+			$(config.container).append($ul);
+
+			var index = 1;
+			$li[0].className='active';
+			function next(){
+				index++;
+				$div.animate({left:-1200*index},function(){
+					if(index==6){
+						$div.css('left','-1200px');
+						index=1;
+					}
+				})
+				navChange();
+			}
+			function prev(){
+				index--;
+				$div.animate({left:-1200*index},function(){
+					if(index==0){
+						$div.css('left','-6000px');
+						index=5;
+					}
+				});
+				navChange();
+			}
+			var timer = setInterval(next,2000);
+
+			$(config.container).mouseenter(function(){
+				clearInterval(timer);
+				$span1.animate({opacity:1},500);
+				$span2.animate({opacity:1},500);
+				$ul.mouseenter(function(){
+					$span1.animate({opacity:0},500);
+					$span2.animate({opacity:0},500);
+				});
+			});
+			$(config.container).mouseleave(function(){
+				$span1.animate({opacity:0},500);
+				$span2.animate({opacity:0},500);
+				timer = setInterval(next,2000);
+			});
+
+			$span1.click(prev);
+			$span2.click(next);
+
+			for(var i=0;i<$li.length;i++){
+				$li[i].idx=i;
+				$($li[i]).click(function(){
+					index=this.idx+1;
+					$div.animate({left:-1200*index});
+					navChange();
+				})
+			}
+			function navChange(){
+				for(var i=0;i<$li.length;i++){
+        			$li[i].className='';
+    			}
+				if(index==6){
+					$li[0].className='active';
+				}else if(index==0){
+					$li[4].className='active';
+				}else{
+					$li[index-1].className='active';
+				}
+			}
+		}
+	</script>
+	<script>
+		$(function(){
+			var swiper = new Swiper({'container':'div.box'});
+		});
+	</script>
+</html>
